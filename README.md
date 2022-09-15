@@ -4,7 +4,7 @@
 ```html
 <weather-widget></weather-widget>
 
-<script src="https://cdn.jsdelivr.net/gh/harmxnic/weather-app@master/dist/js/app.48fb373a.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/harmxnic/weather-app@master/dist/js/weather-app.min.js"></script>
 ```
 ## Project setup
 ```

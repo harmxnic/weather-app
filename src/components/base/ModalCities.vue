@@ -3,38 +3,17 @@
     @click.self="$emit('closeModal')"
   >
     <div class="p-12 pt-14 bg-white w-1/4 relative">
-      <div class="flex flex-col gap-3 mb-3"
-				@drop="onDrop"
-				@dragover.prevent="dragOver"
-				@dragenter.prevent
-				@dragend.prevent="dragEnd"
+      <modal-cities-list class="flex flex-col gap-3 mb-3"
+        :cities="cities"
+        @deleteCity="deleteCity"
+        @startDrag="startDrag"
+        @closeModal="$emit('closeModal')"
+        @drop="onDrop"
+        @dragover.prevent="dragOver"
+        @dragenter.prevent
+        @dragend.prevent="dragEnd"
 				ref="draggableList"
-			>
-				<button class="w-5 h-5 absolute top-5 right-5"
-					@click="$emit('closeModal')"
-				>
-					<icon-cross />
-				</button>
-				<div class="flex items-center text-black bg-gray-300 p-2 w-full item"
-				  v-for="availableCity in cities"
-				  :key="availableCity.id"
-				  draggable="true"
-				  @dragstart="startDrag"
-				  ref="draggableItem"
-				>
-					<button class="w-5 h-5 cursor-grab">
-						<icon-drag />
-					</button>
-					<span class="ml-2">
-						{{ availableCity.cityName }}, {{ availableCity.country }}
-					</span>
-					<button class="w-5 h-5 ml-auto"
-						@click="deleteCity(availableCity)"
-					>
-						<icon-delete />
-					</button>
-				</div>
-			</div>
+			/>
       <button class="flex justify-center items-center w-full h-10 p-2 border-2 border-dashed border-gray-300"
         v-if="!isInputVisible"
         @click="showInput"
@@ -73,14 +52,12 @@
 </template>
 
 <script setup lang="ts">
-import IconDelete from '@/components/base/icons/IconDelete.vue';
 import IconPlus from '@/components/base/icons/IconPlus.vue';
-import IconCross from '@/components/base/icons/IconCross.vue';
-import IconDrag from '@/components/base/icons/IconDrag.vue';
+import ModalCitiesList from '@/components/base/ModalCitiesList.vue';
 
 import { CityInterface } from '@/types/CityInterface';
 
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import axios from 'axios';
 
@@ -88,13 +65,14 @@ defineEmits(['closeModal']);
 
 const cityName = ref<String>('');
 const input = ref<HTMLElement | any>();
-const draggableList = ref<HTMLElement | any>();
-const draggableItem = ref<HTMLElement | any>();
+const draggableList = ref();
 const selectedDraggable = ref<HTMLElement | any>();
 const isInputVisible = ref<Boolean>(false);
 const timeout = ref();
 const suggestions = ref<Array<Object>>([]);
 const cities = ref<CityInterface[]>(JSON.parse(localStorage.getItem('cities') || '[]'));
+
+const draggableItem = computed<HTMLElement | any>(() => draggableList.value.draggableItem);
 
 watch(cities, (newArr, oldArr) => {
 	if (newArr.length > oldArr.length) {

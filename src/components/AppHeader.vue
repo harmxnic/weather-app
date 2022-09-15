@@ -7,7 +7,7 @@
       <icon-cog />
     </button>
     <transition name="modal">
-      <modal-add-city
+      <modal-cities
         v-if="isModalActive"
         @closeModal="closeModal"
       />
@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import IconCog from "@/components/base/icons/IconCog.vue";
-import ModalAddCity from "@/components/base/ModalAddCity.vue";
+import ModalCities from "@/components/base/ModalCities.vue";
 import { ref } from 'vue';
 
 const emits = defineEmits(['updateCities']);

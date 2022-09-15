@@ -7,9 +7,14 @@ module.exports = defineConfig({
     extract: false
   },
   configureWebpack: {
+    output: {
+      filename: 'js/weather-app.min.js',
+      chunkFilename: 'js/weather-app.min.js',
+    },
     optimization: {
       splitChunks: false
     }
   },
-  productionSourceMap: false
+  productionSourceMap: false,
+  filenameHashing: false,
 })
