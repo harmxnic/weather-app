@@ -1,5 +1,11 @@
 # weather-app
 
+## Insert Weather App at page
+```html
+<weather-widget></weather-widget>
+
+<script src="https://cdn.jsdelivr.net/gh/harmxnic/weather-app@master/dist/js/app.48fb373a.js"></script>
+```
 ## Project setup
 ```
 npm install
