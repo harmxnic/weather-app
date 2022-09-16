@@ -40,10 +40,15 @@
 					:key="suggestion.unrestricted_value"
 				>
 					<li class="p-2 bg-gray-700 hover:bg-gray-600 cursor-pointer transition"
-						v-if="suggestion.data.city"
+						v-if="suggestion.data?.city"
 						@click="addCity(suggestion)"
 					>
 						{{ suggestion.data.city }}, {{ suggestion.data.country_iso_code }}
+					</li>
+          <li class="p-2 bg-gray-700 pointer-events-none"
+						v-if="suggestion.addedCity"
+					>
+						{{ suggestion.info }}
 					</li>
 				</template>
 			</ul>
@@ -114,16 +119,24 @@ const showHints = () => {
 };
 
 const addCity = (city: any) => {
-	const newCity: CityInterface = {
-		cityName: city.data.city,
-		country: city.data.country_iso_code,
-		lat: city.data.geo_lat,
-		lon: city.data.geo_lon,
-		id: city.data.geo_lon + city.data.geo_lat
-	};
-	cities.value.push(newCity);
-	localStorage.setItem('cities', JSON.stringify(cities.value));
-	clearSearch();
+	if (!cities.value.find(item => item.id === city.data.geo_lon + city.data.geo_lat)) {
+    const newCity: CityInterface = {
+      cityName: city.data.city,
+      country: city.data.country_iso_code,
+      lat: city.data.geo_lat,
+      lon: city.data.geo_lon,
+      id: city.data.geo_lon + city.data.geo_lat
+    };
+    cities.value.push(newCity);
+    localStorage.setItem('cities', JSON.stringify(cities.value));
+    clearSearch();
+  } else {
+    suggestions.value = [{
+      unrestricted_value: 0,
+      addedCity: true,
+      info: 'City already added'
+    }];
+  }
 };
 
 const deleteCity = (city: CityInterface) => {
